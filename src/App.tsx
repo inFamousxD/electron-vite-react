@@ -1,9 +1,11 @@
 import TreeListTest from './components/TreeListTest'
-import 'devextreme/dist/css/dx.light.css';
+import 'devextreme/dist/css/dx.dark.css';
 
 const App: React.FC = () => {
   return (
-   <TreeListTest />
+    <div>
+      <TreeListTest />
+    </div>
   )
 }
 
