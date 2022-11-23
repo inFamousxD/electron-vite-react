@@ -1,22 +1,33 @@
 import TreeList, {
   Column,
-  ColumnFixing,
-  FilterRow,
   Editing,
-  Lookup,
   Button,
   Toolbar,
-  Item
+  Item,
+  Scrolling
 } from 'devextreme-react/tree-list';
-import { employees } from './employees';
+import { testCaseEditorData } from './employees';
 
-const lookupData = [
-  'Shipping Manager',
-  'Shipping Assistant',
-  'Sales Assistant',
-  'CEO',
-  'CTO'
-];
+const CellOverride = (data: any) => {
+  // console.log('Data', data);
+  return (
+    <div style={{
+      padding: 0,
+      margin: 0
+    }}>
+      { data.value }
+    </div>
+  )
+}
+
+const HeaderCellRender = (data: any) => {
+  // console.log('header', data);
+  return (
+    <div style={{ color: 'black' }}>
+      { data.column.caption }
+    </div>
+  )
+}
 
 const TreeListTest = () => {
   const handleSave = (e: any) => {
@@ -24,51 +35,44 @@ const TreeListTest = () => {
   }
 
   return (
-    <div>
+    <div style={{
+      borderBottom: '2px solid rgb(50, 150, 200)'
+    }}>
       <TreeList
-        dataSource={[]}
+        dataSource={testCaseEditorData}
         rootValue={-1}
-        keyExpr="ID"
-        parentIdExpr="HeadID"
+        keyExpr="Id"
         autoExpandAll={true}
-        allowColumnReordering
         allowColumnResizing
-        height={'720px'}
+        height={'95vh'}
         width={'100vw'}
         onSaved={handleSave}
+        focusedRowEnabled={true}
+        repaintChangesOnly
       >
-        <Column dataField="FullName" fixed={true} minWidth={200} />
-        <Column dataField="Position" minWidth={200}>
-          <Lookup dataSource={lookupData}></Lookup>
-        </Column>
-        <Column dataField="BirthDate" dataType="date" minWidth={120} />
-        <Column dataField="HireDate" dataType="date" minWidth={120} />
-        <Column dataField="City" minWidth={200} />
-        <Column dataField="State" minWidth={200} sortOrder="asc"/>
-        <Column dataField="Email" minWidth={200} />
-        <Column dataField="MobilePhone" minWidth={200} />
-        <Column dataField="Skype" minWidth={200} />
-        <FilterRow visible={true} />
-        <ColumnFixing enabled={true}/>
-        <Editing
-          mode="batch"
-          confirmDelete={false}
-          allowDeleting={true}
-          allowUpdating={true}
-          allowAdding
-        />
+        {/* Visible Data */}
+        <Column headerCellRender={HeaderCellRender} cellRender={CellOverride} dataField="Object" fixed={true} width={200} />
+        <Column dataField="Action" cellRender={CellOverride} width={200} />
+        <Column dataField="Parameters" cellRender={CellOverride} width={220} />
+
+        {/* Command buttons */}
         <Column type="buttons">
-          <Button name="add" icon={'add'} />
-          {/* <Button name="edit" /> */}
-          <Button name="delete" icon={'trash'} />
-          <Button name="undelete" icon={'revert'} />
+          <Button name="add" text='Add' icon={'add'} />
+          <Button name="delete" text='Discard' icon={'trash'} />
+          <Button name="undelete" text='Revert' icon={'revert'} />
         </Column>
+
+        {/* Toolbar */}
         <Toolbar>
-          <Item name="addRowButton" showText="always"></Item>
+          <Item name="addRowButton" />
           <Item name="searchPanel" />
-          <Item name="saveButton" showText="always"/>
-          <Item name="revertButton" showText="always"/>
+          <Item name="saveButton"/>
+          <Item name="revertButton"/>
         </Toolbar>
+
+        {/* Extra Options */}
+        <Editing mode="cell" confirmDelete={false} allowDeleting={true} allowUpdating={true} allowAdding />
+        <Scrolling useNative={false} mode="virtual" />
       </TreeList>
     </div>
   )

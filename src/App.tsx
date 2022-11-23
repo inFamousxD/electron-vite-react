@@ -1,5 +1,5 @@
 import TreeListTest from './components/TreeListTest'
-import 'devextreme/dist/css/dx.dark.css';
+import 'devextreme/dist/css/dx.light.css';
 
 const App: React.FC = () => {
   return (
